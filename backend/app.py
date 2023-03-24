@@ -4,19 +4,21 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 
-# ROOT_PATH for linking with all your files. 
+# ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
-os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..",os.curdir))
+os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 
 # These are the DB credentials for your OWN MySQL
 # Don't worry about the deployment credentials, those are fixed
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
-MYSQL_USER_PASSWORD = "MayankRao16Cornell.edu"
+# Change this to whatever your MySQL password is
+MYSQL_USER_PASSWORD = ""
 MYSQL_PORT = 3306
-MYSQL_DATABASE = "kardashiandb"
+MYSQL_DATABASE = "connectmedb"
 
-mysql_engine = MySQLDatabaseHandler(MYSQL_USER,MYSQL_USER_PASSWORD,MYSQL_PORT,MYSQL_DATABASE)
+mysql_engine = MySQLDatabaseHandler(
+    MYSQL_USER, MYSQL_USER_PASSWORD, MYSQL_PORT, MYSQL_DATABASE)
 
 # Path to init.sql file. This file can be replaced with your own file for testing on localhost, but do NOT move the init.sql file
 mysql_engine.load_file_into_db()
@@ -24,22 +26,51 @@ mysql_engine.load_file_into_db()
 app = Flask(__name__)
 CORS(app)
 
-# Sample search, the LIKE operator in this case is hard-coded, 
-# but if you decide to use SQLAlchemy ORM framework, 
+# Sample search, the LIKE operator in this case is hard-coded,
+# but if you decide to use SQLAlchemy ORM framework,
 # there's a much better and cleaner way to do this
-def sql_search(episode):
-    query_sql = f"""SELECT * FROM episodes WHERE LOWER( title ) LIKE '%%{episode.lower()}%%' limit 10"""
-    keys = ["id","title","descr"]
+
+
+def calculate_similarity(name1, name2):
+    # Query for users 'name1' and 'name2'
+    query_sql = f"""SELECT * FROM responses WHERE LOWER( name ) LIKE '%%{name1.lower()}%%' OR LOWER( name ) LIKE '%%{name2.lower()}%%'"""
     data = mysql_engine.query_selector(query_sql)
-    return json.dumps([dict(zip(keys,i)) for i in data])
+    users = data.fetchall()
+    user1 = users[0]
+    user2 = users[1]
 
-@app.route("/")
-def home():
-    return render_template('base.html',title="sample html")
+    # Edge case: if name1 == name 2, return 100% similarity
+    if len(users) == 1:
+        print("{:0.2f}".format(1.00))
+        return "{:0.2f}".format(1.00)
 
-@app.route("/episodes")
-def episodes_search():
-    text = request.args.get("title")
-    return sql_search(text)
+    # Calculate the similarity based on the L1 loss
+    sim = sum([((10 - abs(v1 - v2)) / (10*(len(user1)-1))) for v1,
+              v2 in zip(user1[1:], user2[1:])])
+
+    # Return similarity in the following format: X.XX
+    return "{:0.2f}".format(sim)
+
+
+def create_similarity_mat():
+    table = f"""SELECT * FROM responses"""
+    data = mysql_engine.query_selector(table)
+    results = data.fetchall()
+
+    mat = [[0] * len(results)] * len(results)
+    return 0
+
+
+# @app.route("/")
+# def home():
+#     return render_template('base.html', title="sample html")
+
+
+# @app.route("/responses")
+# def responses_search():
+#     text = request.args.get("name")
+#     return calculate_similarity(text)
+
+calculate_similarity('William', 'James')
 
 # app.run(debug=True)
