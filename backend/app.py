@@ -13,7 +13,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = ""
+MYSQL_USER_PASSWORD = "mysqlroot"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -58,68 +58,9 @@ def calculate_similarity(name1, name2, sim_matrix):
     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
 
 
-# def calculate_similarity(name1, name2):
-    # Query for users 'name1' and 'name2'
-    query_sql = f"""SELECT * FROM responses WHERE LOWER( name ) LIKE '%%{name1.lower()}%%' OR LOWER( name ) LIKE '%%{name2.lower()}%%'"""
-    data = mysql_engine.query_selector(query_sql)
-    users = data.fetchall()
-    user1 = users[0]
-    user2 = users[1]
-
-    # Edge case: if name1 == name 2, return 100% similarity
-    if len(users) == 1:
-        print("{:0.2f}".format(1.00))
-        return "{:0.2f}".format(1.00)
-
-    # Calculate the similarity based on the L1 loss
-    sim = sum([((10 - abs(v1 - v2)) / (10*(len(user1)-1))) for v1,
-               v2 in zip(user1[1:], user2[1:])])
-
-    # Return similarity in the following format: X.XX
-    return "{:0.2f}".format(sim)
-
-
-# def crazycrazy(name1, name2):
-    query = f"""SELECT * FROM responses"""
-    data = mysql_engine.query_selector(query)
-    results = data.fetchall()
-
-    mat = [[0] * len(results)] * len(results)
-
-    for i in range(len(results)):
-        for j in range(len(results)):
-            if results[i][0] == results[j][0]:
-                mat[i][j] == "{:0.2f}".format(1.00)
-
-            sim = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
-                       v2 in zip(results[i][1:], results[j][1:])])
-
-            mat[i][j] = "{:0.2f}".format(sim)
-
-    for i in range(len(results)):
-        for j in range(len(results)):
-            if (results[i][0] == name1 and results[j][0] == name2) or (results[j][0] == name1 and results[i][0] == name2):
-                # print(name1, name2, mat[i][j])
-                return mat[i][j]
-
-
-# def create_similarity_mat(calc_sim_func):
-    query = f"""SELECT * FROM responses"""
-    data = mysql_engine.query_selector(query)
-    results = data.fetchall()
-
-    mat = [[0] * len(results)] * len(results)
-
-    for i in range(len(results[0])):
-        for j in range(len(results[0])):
-            mat[i][j] = calc_sim_func(results[i][0], results[j][0])
-    print(mat)
-    return mat
-
-
-# @app.route("/")
-# def home():
-#     return render_template('base.html', title="sample html")
+@app.route("/")
+def home():
+    return render_template('base.html', title="sample html")
 
 
 # @app.route("/responses")
@@ -129,4 +70,4 @@ def calculate_similarity(name1, name2, sim_matrix):
 
 calculate_similarity('William', 'Joseph', mat)
 
-# app.run(debug=True)
+app.run(debug=True)
