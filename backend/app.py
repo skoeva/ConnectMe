@@ -56,6 +56,14 @@ CORS(app)
 #     # print(name1, name2, sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]])
 #     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
 
+def sql_search():
+    return json.dumps("hi")
+
+
+@app.route("/episodes")
+def episodes_search():
+    return sql_search()
+
 
 @app.route("/")
 def home():
