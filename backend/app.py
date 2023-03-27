@@ -57,15 +57,15 @@ CORS(app)
 #     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
 
 
-@ app.route("/")
+@app.route("/")
 def home():
     return render_template('base.html', title="sample html")
 
 
-@ app.route("/responses")
-def responses_search():
-    text = request.args.get("name")
-    return calculate_similarity(text, text, mat)
+# @ app.route("/responses")
+# def responses_search():
+#     text = request.args.get("name")
+#     return calculate_similarity(text, text, mat)
 
 
 # calculate_similarity('William', 'Joseph', mat)
