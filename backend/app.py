@@ -70,4 +70,4 @@ def responses_search():
 
 # calculate_similarity('William', 'Joseph', mat)
 
-app.run(debug=True)
+# app.run(debug=True)
