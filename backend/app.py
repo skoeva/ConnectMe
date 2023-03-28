@@ -31,23 +31,23 @@ CORS(app)
 # there's a much better and cleaner way to do this
 
 # Query for everyone in dataset
-query = f"""SELECT * FROM responses"""
-data = mysql_engine.query_selector(query)
-results = data.fetchall()
+# query = f"""SELECT * FROM responses"""
+# data = mysql_engine.query_selector(query)
+# results = data.fetchall()
 
-# Map user name to index in the query results
-name_to_index_map = {}
-for i, user in enumerate(results):
-    name_to_index_map[user[0]] = i
+# # Map user name to index in the query results
+# name_to_index_map = {}
+# for i, user in enumerate(results):
+#     name_to_index_map[user[0]] = i
 
-# Create similarity matrix
-mat = [[0] * len(results) for _ in range(len(results))]
-for i in range(len(mat)):
-    for j in range(len(mat[0])):
-        # Calculate similarity based on the L1 loss
-        sim = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
-                   v2 in zip(results[i][1:], results[j][1:])])
-        mat[i][j] = "{:0.2f}".format(sim)
+# # Create similarity matrix
+# mat = [[0] * len(results) for _ in range(len(results))]
+# for i in range(len(mat)):
+#     for j in range(len(mat[0])):
+#         # Calculate similarity based on the L1 loss
+#         sim = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
+#                    v2 in zip(results[i][1:], results[j][1:])])
+#         mat[i][j] = "{:0.2f}".format(sim)
 
 
 # Calculate similarity between two users given the similarity matrix
@@ -56,6 +56,18 @@ def calculate_similarity(name1, name2, sim_matrix):
     print(name1, name2,
           sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]])
     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
+# def calculate_similarity(name1, name2, sim_matrix):
+#     # Print statement for debugging (i.e. William Joseph 0.65)
+#     # print(name1, name2, sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]])
+#     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
+
+def sql_search():
+    return json.dumps("hi")
+
+
+@app.route("/episodes")
+def episodes_search():
+    return sql_search()
 
 
 @app.route("/")
@@ -63,11 +75,10 @@ def home():
     return render_template('base.html', title="sample html")
 
 
-# @app.route("/responses")
+# @ app.route("/responses")
 # def responses_search():
 #     text = request.args.get("name")
-#     return calculate_similarity(text)
+#     return calculate_similarity(text, text, mat)
 
-calculate_similarity('William', 'Joseph', mat)
 
 app.run(debug=True)
