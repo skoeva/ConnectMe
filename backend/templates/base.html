@@ -3,33 +3,40 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
-    rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
 
 <body>
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="google-colors">
-                <h1 id="google-c">C</h1>
-                <h1 id="google-s">o</h1>
-                <h1 id="google-4">n</h1>
-                <h1 id="google-3">n</h1>
-                <h1 id="google-0-1">e</h1>
-                <h1 id="google-0-2">c</h1>
-                <h1 id="google-c">t</h1>
-                <h1 id="google-s">M</h1>
-                <h1 id="google-4">e</h1>
-            </div>
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for a Keeping up with the Kardashians episode" id="filter-text-val"
-                    onkeyup="filterText()">
-            </div>
-        </div>
-        <div id="answer-box">
-
-        </div>
+  <div class="full-body-container">
+    <div class="top-text">
+      <div class="google-colors">
+        <h1 id="google-c">C</h1>
+        <h1 id="google-s">o</h1>
+        <h1 id="google-4">n</h1>
+        <h1 id="google-3">n</h1>
+        <h1 id="google-0-1">e</h1>
+        <h1 id="google-0-2">c</h1>
+        <h1 id="google-c">t</h1>
+        <h1 id="google-s">M</h1>
+        <h1 id="google-4">e</h1>
+      </div>
     </div>
+    <div class="center-content">
+      <div class="questionnaire-output-container">
+        <form id="questionnaire-form">
+          <ol class="question-list">
+            {% for question in questions %}
+            <li class="question-item">
+              <label for="question-{{ loop.index }}">{{ question }} </label>
+              <input type="number" id="question-{{ loop.index }}" name="question-{{ loop.index }}">
+            </li>
+            {% endfor %}
+          </ol>
+          <button type="button" onclick="generateOutput()">Click</button>
+        </form>
+        <div id="country-output"></div>
+      </div>
+    </div>
+  </div>
 
     <script>
 
@@ -58,5 +65,67 @@
 
         }
 
+        function generateOutput() {
+      const inputs = document.querySelectorAll("#questionnaire-form input[type='number']");
+      const outputElement = document.getElementById("country-output");
+      let allInputsFilled = true;
+      inputs.forEach(input => {
+        if (input.value === "") {
+          allInputsFilled = false;
+        }
+      });
+
+      if (!allInputsFilled) {
+        outputElement.innerText = "Please fill in all the inputs.";
+        outputElement.classList.add("error-message");
+        return;
+      } else {
+        outputElement.classList.remove("error-message");
+      }
+
+            const countries = ['Andorra', 'Argentina', 'Australia', 'Bangladesh' ,'Armenia' ,'Bolivia',
+            'Brazil' ,'Canada' ,'Chile', 'Taiwan ROC' ,'Colombia' ,'Cyprus', 'Czechia',
+            'Ecuador' ,'Ethiopia' ,'Germany' ,'Greece' ,'Guatemala' ,'Hong Kong SAR',
+            'Indonesia' ,'Japan' ,'Kenya' ,'South Korea', 'Libya', 'Macau SAR' ,'Malaysia',
+            'Maldives' ,'Mexico' ,'Mongolia', 'Morocco', 'Netherlands' ,'New Zealand',
+            'Nicaragua' ,'Nigeria' ,'Peru', 'Philippines', 'Puerto Rico', 'Romania',
+            'Russia', 'Serbia' ,'Singapore','Slovakia', 'Zimbabwe' ,'Tajikistan',
+            'Thailand' ,'Tunisia' ,'Turkey' ,'Ukraine', 'Great Britain' ,'United States',
+            'Uruguay' ,'Northern Ireland'];
+            outputElement.innerHTML = "";
+
+            for (let i = 0; i < 5; i++) {
+                const randomIndex = Math.floor(Math.random() * countries.length);
+                const randomCountry = countries[randomIndex];
+                countries.splice(randomIndex, 1);
+
+                const countryElement = document.createElement("div");
+                countryElement.innerText = randomCountry;
+                outputElement.appendChild(countryElement);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+        const questions = [
+            "How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
+            "How important is happiness to you?",
+            "Do you think science and technology make our lives healthier, easier, and more comfortable?",
+            "Do you think we depend too much on science and not enough on faith.",
+            "How important is not having any corruption in a country?",
+            "How important is God in your life?",
+            'In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
+            "How interested would you say you are in politics?",
+            "How important is individual human rights to you?",
+            "Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important?"
+        ];
+
+        const questionContainer = document.querySelector(".question-list");
+        questionContainer.innerHTML = questions.map((question, index) => `
+            <li class="question-item">
+            <label for="question-${index + 1}">${question} </label>
+            <input type="number" id="question-${index + 1}" name="question-${index + 1}">
+            </li>
+        `).join('');
+        });
     </script>
 </body>
