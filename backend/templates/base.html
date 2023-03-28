@@ -1,71 +1,79 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
-
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %} - Flaskr</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+</head>
 <body>
   <div class="full-body-container">
-    <div class="top-text">
-      <div class="google-colors">
-        <h1 id="google-c">C</h1>
-        <h1 id="google-s">o</h1>
-        <h1 id="google-4">n</h1>
-        <h1 id="google-3">n</h1>
-        <h1 id="google-0-1">e</h1>
-        <h1 id="google-0-2">c</h1>
-        <h1 id="google-c">t</h1>
-        <h1 id="google-s">M</h1>
-        <h1 id="google-4">e</h1>
+
+    <div class="header-section">
+      <div class="top-text">
+        <div class="google-colors">
+          <h1 id="google-c">C</h1>
+          <h1 id="google-s">o</h1>
+          <h1 id="google-4">n</h1>
+          <h1 id="google-3">n</h1>
+          <h1 id="google-0-1">e</h1>
+          <h1 id="google-0-2">c</h1>
+          <h1 id="google-c">t</h1>
+          <h1 id="google-s">M</h1>
+          <h1 id="google-4">e</h1>
+        </div>
       </div>
     </div>
-    <div class="center-content">
-      <div class="questionnaire-output-container">
-        <form id="questionnaire-form">
-          <ol class="question-list">
-            {% for question in questions %}
-            <li class="question-item">
-              <label for="question-{{ loop.index }}">{{ question }} </label>
-              <input type="number" id="question-{{ loop.index }}" name="question-{{ loop.index }}">
-            </li>
-            {% endfor %}
-          </ol>
-          <button type="button" onclick="generateOutput()">Click</button>
-        </form>
-        <div id="country-output"></div>
-      </div>
+
+    <div class="questions-section">
+      <form id="questionnaire-form">
+        <ol class="question-list">
+          {% for question in questions %}
+          <li class="question-item">
+            <label for="question-{{ loop.index }}">{{ question }} </label>
+            <input type="number" id="question-{{ loop.index }}" name="question-{{ loop.index }}">
+          </li>
+          {% endfor %}
+        </ol>
+      </form>
     </div>
+
+    <div class="output-container">
+      <button type="button" onclick="generateOutput()">Click</button>
+      <div id="country-output"></div>
+    </div>
+
   </div>
 
-    <script>
+  <script>
+    function answerBoxTemplate(title, titleDesc) {
+        return `<div class=''>
+            <h3 class='episode-title'>${title}</h3>
+            <p class='episode-desc'>${titleDesc}</p>
+        </div>`
+    }
 
-        function answerBoxTemplate(title, titleDesc) {
-            return `<div class=''>
-                <h3 class='episode-title'>${title}</h3>
-                <p class='episode-desc'>${titleDesc}</p>
-            </div>`
-        }
+    function sendFocus() {
+        document.getElementById('filter-text-val').focus()
+    }
 
-        function sendFocus() {
-            document.getElementById('filter-text-val').focus()
-        }
+    function filterText() {
+        document.getElementById("answer-box").innerHTML = ""
+        console.log(document.getElementById("filter-text-val").value)
+        fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+            .then((response) => response.json())
+            .then((data) => data.forEach(row => {
 
-        function filterText() {
-            document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
-            fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-                .then((response) => response.json())
-                .then((data) => data.forEach(row => {
+                let tempDiv = document.createElement("div")
+                tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
+                document.getElementById("answer-box").appendChild(tempDiv)
+            }));
 
-                    let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
-                    document.getElementById("answer-box").appendChild(tempDiv)
-                }));
+    }
 
-        }
-
-        function generateOutput() {
+    function generateOutput() {
       const inputs = document.querySelectorAll("#questionnaire-form input[type='number']");
       const outputElement = document.getElementById("country-output");
       let allInputsFilled = true;
@@ -76,12 +84,13 @@
       });
 
       if (!allInputsFilled) {
-        outputElement.innerText = "Please fill in all the inputs.";
-        outputElement.classList.add("error-message");
-        return;
-      } else {
-        outputElement.classList.remove("error-message");
-      }
+  outputElement.innerHTML = "<br>Please fill in all the inputs.";
+  outputElement.style.color = "red";
+  return;
+} else {
+  outputElement.style.color = "";
+}
+
 
             const countries = ['Andorra', 'Argentina', 'Australia', 'Bangladesh' ,'Armenia' ,'Bolivia',
             'Brazil' ,'Canada' ,'Chile', 'Taiwan ROC' ,'Colombia' ,'Cyprus', 'Czechia',
@@ -127,5 +136,5 @@
             </li>
         `).join('');
         });
-    </script>
+  </script>
 </body>
