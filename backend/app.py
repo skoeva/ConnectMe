@@ -13,7 +13,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "mysqlroot"
+MYSQL_USER_PASSWORD = "hyderabad"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -51,7 +51,7 @@ for i in range(len(mat)):
 
 
 # Calculate similarity between two users given the similarity matrix
-def calculate_similarity(name1, name2, sim_matrix):
+def calculate_similarity(name1, name2, sim_matrix): 
     # Print statement for debugging (i.e. William Joseph 0.65)
     print(name1, name2,
           sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]])
