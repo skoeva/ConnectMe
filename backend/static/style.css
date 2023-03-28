@@ -1,55 +1,54 @@
 body {
-    font-family: 'Open Sans', sans-serif;
-    line-height: 1.6;
-    background-color: #f4f6f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .full-body-container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 1em;
-  }
-  
-  .header-section {
-    text-align: center;
-  }
-  
-  .questions-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2em;
-  }
-  
-  .output-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2em;
-  }
-  
-  .question-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .question-item {
-    margin-bottom: 1em;
-  }
-  
-  .google-colors h1 {
-    display: inline;
-    font-size: 3em;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-  }
-  
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.6;
+  background-color: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-body-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1em;
+}
+
+.header-section {
+  text-align: center;
+}
+
+.questions-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.output-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.question-list {
+  list-style: none;
+  padding: 0;
+}
+
+.question-item {
+  margin-bottom: 1em;
+}
+
+.google-colors h1 {
+  display: inline;
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
   #google-c {
     color: #4285f4;
   }
@@ -74,13 +73,13 @@ body {
     color: #ea4335;
   }
   
-  #error-message {
+  .output-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    margin-top: 2em;
   }
   
-  .output-container,
-  .error-container {
-    width: 50%;
-  }
-  
+  .question-item label::before {
+    content: counter(li) ". ";
+  }  

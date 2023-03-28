@@ -32,7 +32,7 @@
         <ol class="question-list">
           {% for question in questions %}
           <li class="question-item">
-            <label for="question-{{ loop.index }}">{{ question }} </label>
+            <label for="question-{{ loop.index }}">{{ question }}</label>
             <input type="number" id="question-{{ loop.index }}" name="question-{{ loop.index }}">
           </li>
           {% endfor %}
@@ -137,4 +137,5 @@
         `).join('');
         });
   </script>
+  
 </body>
