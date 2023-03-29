@@ -1,13 +1,16 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>{% block title %}{% endblock %} - Flaskr</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
   <div class="full-body-container">
 
@@ -27,6 +30,9 @@
       </div>
     </div>
 
+    <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
+    <h3>For each of the questions below, please enter a number from 1 to 10, 1 being heavily disagree and 10 being
+      heavily agree</h3>
     <div class="questions-section">
       <form id="questionnaire-form">
         <ol class="question-list">
@@ -41,7 +47,7 @@
     </div>
 
     <div class="output-container">
-      <button type="button" onclick="generateOutput()">Click</button>
+      <button type="button" onclick="generateOutput()">Find my countries</button>
       <div id="country-output"></div>
     </div>
 
@@ -49,27 +55,27 @@
 
   <script>
     function answerBoxTemplate(title, titleDesc) {
-        return `<div class=''>
+      return `<div class=''>
             <h3 class='episode-title'>${title}</h3>
             <p class='episode-desc'>${titleDesc}</p>
         </div>`
     }
 
     function sendFocus() {
-        document.getElementById('filter-text-val').focus()
+      document.getElementById('filter-text-val').focus()
     }
 
     function filterText() {
-        document.getElementById("answer-box").innerHTML = ""
-        console.log(document.getElementById("filter-text-val").value)
-        fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
-            .then((response) => response.json())
-            .then((data) => data.forEach(row => {
+      document.getElementById("answer-box").innerHTML = ""
+      console.log(document.getElementById("filter-text-val").value)
+      fetch("/episodes?" + new URLSearchParams({ title: document.getElementById("filter-text-val").value }).toString())
+        .then((response) => response.json())
+        .then((data) => data.forEach(row => {
 
-                let tempDiv = document.createElement("div")
-                tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
-                document.getElementById("answer-box").appendChild(tempDiv)
-            }));
+          let tempDiv = document.createElement("div")
+          tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
+          document.getElementById("answer-box").appendChild(tempDiv)
+        }));
 
     }
 
@@ -84,58 +90,58 @@
       });
 
       if (!allInputsFilled) {
-  outputElement.innerHTML = "<br>Please fill in all the inputs.";
-  outputElement.style.color = "red";
-  return;
-} else {
-  outputElement.style.color = "";
-}
+        outputElement.innerHTML = "<br>Please fill in all the inputs.";
+        outputElement.style.color = "red";
+        return;
+      } else {
+        outputElement.style.color = "";
+      }
 
 
-            const countries = ['Andorra', 'Argentina', 'Australia', 'Bangladesh' ,'Armenia' ,'Bolivia',
-            'Brazil' ,'Canada' ,'Chile', 'Taiwan ROC' ,'Colombia' ,'Cyprus', 'Czechia',
-            'Ecuador' ,'Ethiopia' ,'Germany' ,'Greece' ,'Guatemala' ,'Hong Kong SAR',
-            'Indonesia' ,'Japan' ,'Kenya' ,'South Korea', 'Libya', 'Macau SAR' ,'Malaysia',
-            'Maldives' ,'Mexico' ,'Mongolia', 'Morocco', 'Netherlands' ,'New Zealand',
-            'Nicaragua' ,'Nigeria' ,'Peru', 'Philippines', 'Puerto Rico', 'Romania',
-            'Russia', 'Serbia' ,'Singapore','Slovakia', 'Zimbabwe' ,'Tajikistan',
-            'Thailand' ,'Tunisia' ,'Turkey' ,'Ukraine', 'Great Britain' ,'United States',
-            'Uruguay' ,'Northern Ireland'];
-            outputElement.innerHTML = "";
+      const countries = ['Andorra', 'Argentina', 'Australia', 'Bangladesh', 'Armenia', 'Bolivia',
+        'Brazil', 'Canada', 'Chile', 'Taiwan ROC', 'Colombia', 'Cyprus', 'Czechia',
+        'Ecuador', 'Ethiopia', 'Germany', 'Greece', 'Guatemala', 'Hong Kong SAR',
+        'Indonesia', 'Japan', 'Kenya', 'South Korea', 'Libya', 'Macau SAR', 'Malaysia',
+        'Maldives', 'Mexico', 'Mongolia', 'Morocco', 'Netherlands', 'New Zealand',
+        'Nicaragua', 'Nigeria', 'Peru', 'Philippines', 'Puerto Rico', 'Romania',
+        'Russia', 'Serbia', 'Singapore', 'Slovakia', 'Zimbabwe', 'Tajikistan',
+        'Thailand', 'Tunisia', 'Turkey', 'Ukraine', 'Great Britain', 'United States',
+        'Uruguay', 'Northern Ireland'];
+      outputElement.innerHTML = "";
 
-            for (let i = 0; i < 5; i++) {
-                const randomIndex = Math.floor(Math.random() * countries.length);
-                const randomCountry = countries[randomIndex];
-                countries.splice(randomIndex, 1);
+      for (let i = 0; i < 5; i++) {
+        const randomIndex = Math.floor(Math.random() * countries.length);
+        const randomCountry = countries[randomIndex];
+        countries.splice(randomIndex, 1);
 
-                const countryElement = document.createElement("div");
-                countryElement.innerText = randomCountry;
-                outputElement.appendChild(countryElement);
-            }
-        }
+        const countryElement = document.createElement("div");
+        countryElement.innerText = randomCountry;
+        outputElement.appendChild(countryElement);
+      }
+    }
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const questions = [
-            "How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
-            "How important is happiness to you?",
-            "Do you think science and technology make our lives healthier, easier, and more comfortable?",
-            "Do you think we depend too much on science and not enough on faith.",
-            "How important is not having any corruption in a country?",
-            "How important is God in your life?",
-            'In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
-            "How interested would you say you are in politics?",
-            "How important is individual human rights to you?",
-            "Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important?"
-        ];
+    document.addEventListener("DOMContentLoaded", function () {
+      const questions = [
+        "1. How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
+        "2. How important is happiness to you?",
+        "3. Do you think science and technology make our lives healthier, easier, and more comfortable?",
+        "4. Do you think we depend too much on science and not enough on faith.",
+        "5. How important is not having any corruption in a country?",
+        "6. How important is God in your life?",
+        '7. In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
+        "8. How interested would you say you are in politics?",
+        "9. How important is individual human rights to you?",
+        "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important?"
+      ];
 
-        const questionContainer = document.querySelector(".question-list");
-        questionContainer.innerHTML = questions.map((question, index) => `
+      const questionContainer = document.querySelector(".question-list");
+      questionContainer.innerHTML = questions.map((question, index) => `
             <li class="question-item">
             <label for="question-${index + 1}">${question} </label>
             <input type="number" id="question-${index + 1}" name="question-${index + 1}">
             </li>
         `).join('');
-        });
+    });
   </script>
-  
+
 </body>

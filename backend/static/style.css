@@ -49,37 +49,43 @@ body {
   margin: 0;
   padding: 0;
 }
-  #google-c {
-    color: #4285f4;
-  }
-  
-  #google-s {
-    color: #ea4335;
-  }
-  
-  #google-4 {
-    color: #fbbc05;
-  }
-  
-  #google-3 {
-    color: #4285f4;
-  }
-  
-  #google-0-1 {
-    color: #34a853;
-  }
-  
-  #google-0-2 {
-    color: #ea4335;
-  }
-  
-  .output-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2em;
-  }
-  
-  .question-item label::before {
-    content: counter(li) ". ";
-  }  
+
+#google-c {
+  color: #4285f4;
+}
+
+#google-s {
+  color: #ea4335;
+}
+
+#google-4 {
+  color: #fbbc05;
+}
+
+#google-3 {
+  color: #4285f4;
+}
+
+#google-0-1 {
+  color: #34a853;
+}
+
+#google-0-2 {
+  color: #ea4335;
+}
+
+.output-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+input[type='number'] {
+  width: 60px;
+}
+
+img {
+  width: 500px;
+  height: 350px;
+}
