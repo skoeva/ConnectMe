@@ -13,7 +13,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "Year2013"
+MYSQL_USER_PASSWORD = "mysqlroot"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -55,7 +55,17 @@ for i in range(len(results)):
     sim_array[i] = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
                         v2 in zip(results[i][1:], user)])
 
-print(sim_array)
+# Map similarity values to country
+sim_to_name_map = {}
+for i in range(len(sim_array)):
+    sim_to_name_map[sim_array[i]] = index_to_name_map[i]
+
+# Sort similarity array
+sim_array.sort()
+
+# Print top 5 countries
+for i in range(5):
+    print(sim_to_name_map[sim_array[i]])
 
 # Create similarity matrix
 # mat = [[0] * len(results) for _ in range(len(results))]
