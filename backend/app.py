@@ -14,7 +14,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "hyderabad"
+MYSQL_USER_PASSWORD = "mysqlroot"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -36,11 +36,6 @@ query = f"""SELECT * FROM responses"""
 data = mysql_engine.query_selector(query)
 results = data.fetchall()
 len(results)
-
-# Map country to index in the query results
-name_to_index_map = {}
-for i, country in enumerate(results):
-    name_to_index_map[country[0]] = i
 
 # Map index to country name from the query results
 index_to_name_map = {}
@@ -69,9 +64,11 @@ similar_countries = []
 for sim_value in sim_array[:5]:
     similar_countries.extend(sim_to_name_map[sim_value])
 
+
 @app.route("/")
 def home():
     return render_template('base.html', title="sample html")
+
 
 @app.route('/api/calculate_similarity', methods=['POST'])
 def calculate_similarity():
@@ -80,11 +77,13 @@ def calculate_similarity():
     top_5_countries = get_top_countries(user_input)
     return jsonify(top_5_countries)
 
+
 def get_top_countries(user_input):
     sim_array = [0] * len(results)
     for i in range(len(results)):
         sim_array[i] = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
                             v2 in zip(results[i][1:], user_input)])
-    sim_countries = sorted(zip(sim_array, range(len(sim_array))), reverse=True)[:5]
+    sim_countries = sorted(
+        zip(sim_array, range(len(sim_array))), reverse=True)[:5]
     top_countries = [index_to_name_map[index] for _, index in sim_countries]
     return top_countries
