@@ -1,6 +1,7 @@
 import json
 import os
-from flask import Flask, render_template, request
+from collections import defaultdict
+from flask import Flask, render_template, request, json, jsonify
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 
@@ -13,7 +14,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "mysqlroot"
+MYSQL_USER_PASSWORD = "hyderabad"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -55,45 +56,35 @@ for i in range(len(results)):
     sim_array[i] = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
                         v2 in zip(results[i][1:], user)])
 
-# Map similarity values to country
-sim_to_name_map = {}
+# Map similarity values to countries
+sim_to_name_map = defaultdict(list)
 for i in range(len(sim_array)):
-    sim_to_name_map[sim_array[i]] = index_to_name_map[i]
+    sim_to_name_map[sim_array[i]].append(index_to_name_map[i])
 
-# Sort similarity array
-sim_array.sort()
+# Sort similarity array in descending order
+sim_array.sort(reverse=True)
 
-# Print top 5 countries
-for i in range(5):
-    print(sim_to_name_map[sim_array[i]])
-
-# Create similarity matrix
-# mat = [[0] * len(results) for _ in range(len(results))]
-# for i in range(len(mat)):
-#     for j in range(len(mat[0])):
-#         # Calculate similarity based on the L1 loss
-# sim = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
-#            v2 in zip(results[i][1:], results[j][1:])])
-#         mat[i][j] = "{:0.10f}".format(sim)
-# print(mat)
-
-
-# Calculate similarity between input and country responses
-# def calculate_similarity(name1, name2, sim_matrix):
-#     # Print statement for debugging
-#     # print(name1, name2, sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]])
-#     return sim_matrix[name_to_index_map[name1]][name_to_index_map[name2]]
-
+# Get the top 5 similar countries
+similar_countries = []
+for sim_value in sim_array[:5]:
+    similar_countries.extend(sim_to_name_map[sim_value])
 
 @app.route("/")
 def home():
     return render_template('base.html', title="sample html")
 
+@app.route('/api/calculate_similarity', methods=['POST'])
+def calculate_similarity():
+    user_input = request.json.get('user_input', [])
+    print(user_input)
+    top_5_countries = get_top_countries(user_input)
+    return jsonify(top_5_countries)
 
-# @ app.route("/responses")
-# def responses_search():
-#     text = request.args.get("name")
-#     return calculate_similarity(text, text, mat)
-
-
-# calculate_similarity('William', 'Joseph', mat)
+def get_top_countries(user_input):
+    sim_array = [0] * len(results)
+    for i in range(len(results)):
+        sim_array[i] = sum([((10 - abs(v1 - v2)) / (10*(len(results[0])-1))) for v1,
+                            v2 in zip(results[i][1:], user_input)])
+    sim_countries = sorted(zip(sim_array, range(len(sim_array))), reverse=True)[:5]
+    top_countries = [index_to_name_map[index] for _, index in sim_countries]
+    return top_countries

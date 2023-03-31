@@ -36,10 +36,15 @@ body {
 .question-list {
   list-style: none;
   padding: 0;
+  color: #000;
 }
 
 .question-item {
   margin-bottom: 1em;
+}
+
+.question-item label {
+  color: #000;
 }
 
 .google-colors h1 {
