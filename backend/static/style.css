@@ -1,7 +1,7 @@
 body {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.6;
-  background-color: #f4f6f9;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 0;
   display: flex;
@@ -87,10 +87,37 @@ body {
 }
 
 input[type='number'] {
-  width: 60px;
+  width: 50px;
+  border: 1px solid #b1adad;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 1.1em;
 }
 
 img {
   width: 500px;
   height: 350px;
+}
+
+button[type="submit"] {
+  background-color: #4285f4;
+  cursor: pointer;
+  color: white;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #082d6d;
+}
+
+.output-message {
+  font-size: 1.6em;
+  color: #292f37;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1em;
 }

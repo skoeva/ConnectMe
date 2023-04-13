@@ -83,7 +83,8 @@
       const topCountries = await postData('/process_input', userInput);
 
       // Generate and display the output
-      outputElement.innerHTML = `Your top 5 countries are: ${topCountries.join(', ')}`;
+      outputElement.innerHTML = `<span class="output-message">Your top 5 countries are: ${topCountries.join(', ')}</span>`;
+
     });
 
 
@@ -98,7 +99,7 @@
       '7. In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
       "8. How interested would you say you are in politics?",
       "9. How important is individual human rights to you?",
-      "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important?"
+      "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important? (1 is associated with freedom and 10 with security)"
     ];
 
     const questionContainer = document.querySelector(".question-list");
@@ -142,7 +143,8 @@
       const result = await response.json();
 
       const resultElement = document.getElementById("result");
-      resultElement.innerHTML = `Your top 5 countries are: ${result.join(", ")}.`;
+      resultElement.innerHTML = `<span class="output-message">Your top 5 countries are: ${result.join(", ")}.</span>`;
+
     }
     const form = document.getElementById("questionnaire-form");
     form.addEventListener("submit", submitForm);
