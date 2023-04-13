@@ -103,7 +103,7 @@ button[type="submit"] {
   background-color: #4285f4;
   cursor: pointer;
   color: white;
-  padding: 15px 30px;
+  padding: 10px 20px;
   font-size: 1.2em;
   border-radius: 5px;
   border: none;
@@ -115,7 +115,7 @@ button[type="submit"]:hover {
 }
 
 .output-message {
-  font-size: 1.6em;
+  font-size: 1.2em;
   color: #292f37;
   font-weight: bold;
   text-align: center;
