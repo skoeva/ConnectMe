@@ -30,8 +30,9 @@
   <div class="full-body-container">
 
     <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
-    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:</h3>
-  
+    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:
+    </h3>
+
     <div class="questions-section">
       <form id="questionnaire-form" onsubmit="submitForm(event)">
         <ol class="question-list">
@@ -39,11 +40,12 @@
           <li class="question-item">
             <label for="question-{{ loop.index }}">{{ question }}</label>
             <div class="slidecontainer">
-              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider" value="5" required>
+              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider"
+                value="5" required>
               <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
               <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
             </div>
-            
+
           </li>
           {% endfor %}
         </ol>
@@ -94,24 +96,24 @@
 
     });
 
-   // Get all the sliders
-  const sliders = document.querySelectorAll('.slider');
+    // Get all the sliders
+    const sliders = document.querySelectorAll('.slider');
 
-  // Loop through each slider
-  sliders.forEach(slider => {
-  // Get the output element for this slider
-  const output = document.getElementById(slider.id + '-value');
-  // Get the label element for this slider
-  const label = document.getElementById(slider.id + '-label');
+    // Loop through each slider
+    sliders.forEach(slider => {
+      // Get the output element for this slider
+      const output = document.getElementById(slider.id + '-value');
+      // Get the label element for this slider
+      const label = document.getElementById(slider.id + '-label');
 
-  // Set the initial value of the label element
-  label.textContent = slider.value;
+      // Set the initial value of the label element
+      label.textContent = slider.value;
 
-  // Update the label element whenever the slider value changes
-  slider.addEventListener('input', () => {
-    label.textContent = slider.value;
-  });
-});
+      // Update the label element whenever the slider value changes
+      slider.addEventListener('input', () => {
+        label.textContent = slider.value;
+      });
+    });
 
     const questions = [
       "1. How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",

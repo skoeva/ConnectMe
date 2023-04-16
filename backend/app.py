@@ -4,6 +4,10 @@ from collections import defaultdict
 from flask import Flask, render_template, request, json, jsonify
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+import numpy as np
+from scipy.sparse.linalg import svds
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -14,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "mysqlroot"
+MYSQL_USER_PASSWORD = "Year2013"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -74,8 +78,9 @@ def home():
 def calculate_similarity():
     user_input = request.json.get('user_input', [])
     print(user_input)
-    top_5_countries = get_top_countries(user_input)
-    return jsonify(top_5_countries)
+    #top_5_countries = get_top_countries(user_input)
+    top_5_countries = svd_top_countries(user_input) #testing with SVD similarity
+    return jsonify(top_5_countries) 
 
 
 def get_top_countries(user_input):
@@ -86,4 +91,23 @@ def get_top_countries(user_input):
     sim_countries = sorted(
         zip(sim_array, range(len(sim_array))), reverse=True)[:5]
     top_countries = [index_to_name_map[index] for _, index in sim_countries]
+    return top_countries
+
+def svd_top_countries(user_input): #This is the main idea of the SVD, can make some tweaks if necessary
+    data = np.array([list(row[1:]) for row in results]) #Based off the original dataset, but can be changed to fit the previous top 5 countries
+    k = min(data.shape)
+    scaler = StandardScaler()
+    data_standardized = scaler.fit_transform(data)
+
+    U, sigma, V_trans = svds(data_standardized, k) #compute SVD
+
+    user_input_standardized = scaler.transform([user_input])
+
+    user_input_svd = np.dot(user_input_standardized, U) #Using U 
+
+    similarity_scores = cosine_similarity(user_input_svd, U) #imported cosine similarity function, but could do it manually as well. 
+
+    top_country_indices = np.argsort(similarity_scores[0])[::-1][:5]
+    top_countries = [index_to_name_map[index] for index in top_country_indices]
+
     return top_countries
