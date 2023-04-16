@@ -30,8 +30,7 @@
   <div class="full-body-container">
 
     <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
-    <h3>For each of the questions below, please enter a number from 1 to 10, 1 being heavily disagree and 10 being
-      heavily agree</h3>
+    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:</h3>
   
     <div class="questions-section">
       <form id="questionnaire-form" onsubmit="submitForm(event)">
@@ -126,9 +125,16 @@
       "9. How important is individual human rights to you?",
       "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important? (1 is associated with freedom and 10 with security)"
     ];
+    const updated_questions = [
+      "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
+      "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort",
+      "3. How significant is the role of spirituality or a higher power in your life?",
+      "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
+      "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
+    ];
 
     const questionContainer = document.querySelector(".question-list");
-    questionContainer.innerHTML = questions.map((question, index) => `
+    questionContainer.innerHTML = updated_questions.map((question, index) => `
         <li class="question-item">
         <label for="question-${index + 1}">${question} </label>
         <input type="range" id="question-${index + 1}" name="question-${index + 1}">
