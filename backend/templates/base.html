@@ -13,6 +13,8 @@
 
 <body>
   <div class="nav-bar">
+    <!-- <h2 style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica',
+    'Arial', 'Lucida Grande', sans-serif; font-size: 2em;">ConnectMe</h2> -->
     <div class="top-text">
       <div class="google-colors">
         <h1 id="google-c">C</h1>
@@ -29,8 +31,10 @@
   </div>
   <div class="full-body-container">
 
-    <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
-    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:
+    <h2>Not sure where to travel next or move to? Finding the best
+      country for you!</h2>
+    <h3>Please rate the following statements from 1 (strongly disagree) to 10
+      (strongly agree):
     </h3>
 
     <div class="questions-section">
@@ -39,17 +43,20 @@
           {% for question in questions %}
           <li class="question-item">
             <label for="question-{{ loop.index }}">{{ question }}</label>
-            <div class="slidecontainer">
+            <input type="number" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" required>
+            <!-- <div class="slidecontainer">
               <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider"
-                value="5" required>
+                value="1" required>
               <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
               <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
-            </div>
+            </div> -->
 
           </li>
           {% endfor %}
         </ol>
-        <button type="submit">Find my countries</button>
+        <div class="button-holder">
+          <button type="submit">Find my countries</button>
+        </div>
       </form>
     </div>
 
@@ -61,7 +68,7 @@
   <script>
     document.getElementById("questionnaire-form").addEventListener("submit", async function (event) {
       event.preventDefault();
-      const inputs = document.querySelectorAll("#questionnaire-form input[type='range']");
+      const inputs = document.querySelectorAll("#questionnaire-form input[type='number']"); // change to range
       const outputElement = document.getElementById("results");
 
       // Check if all inputs are filled
@@ -96,24 +103,24 @@
 
     });
 
-    // Get all the sliders
-    const sliders = document.querySelectorAll('.slider');
+    // // Get all the sliders
+    // const sliders = document.querySelectorAll('.slider');
 
-    // Loop through each slider
-    sliders.forEach(slider => {
-      // Get the output element for this slider
-      const output = document.getElementById(slider.id + '-value');
-      // Get the label element for this slider
-      const label = document.getElementById(slider.id + '-label');
+    // // Loop through each slider
+    // sliders.forEach(slider => {
+    //   // Get the output element for this slider
+    //   const output = document.getElementById(slider.id + '-value');
+    //   // Get the label element for this slider
+    //   const label = document.getElementById(slider.id + '-label');
 
-      // Set the initial value of the label element
-      label.textContent = slider.value;
+    //   // Set the initial value of the label element
+    //   label.textContent = slider.value;
 
-      // Update the label element whenever the slider value changes
-      slider.addEventListener('input', () => {
-        label.textContent = slider.value;
-      });
-    });
+    //   // Update the label element whenever the slider value changes
+    //   slider.addEventListener('input', () => {
+    //     label.textContent = slider.value;
+    //   });
+    // });
 
     const questions = [
       "1. How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
@@ -129,17 +136,17 @@
     ];
     const updated_questions = [
       "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
-      "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort",
+      "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort?",
       "3. How significant is the role of spirituality or a higher power in your life?",
       "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
-      "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
+      "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security.",
     ];
 
     const questionContainer = document.querySelector(".question-list");
     questionContainer.innerHTML = updated_questions.map((question, index) => `
         <li class="question-item">
         <label for="question-${index + 1}">${question} </label>
-        <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+        <input type="number" id="question-${index + 1}" name="question-${index + 1}">
         </li>
     `).join('');
 
@@ -158,7 +165,7 @@
       event.preventDefault();
       const form = document.getElementById("questionnaire-form");
       const formData = new FormData(form);
-      const inputs = Array.from(document.querySelectorAll('input[type="range"]'));
+      const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
       const userInput = inputs.map(input => Number(input.value));
 
       //const userInput = formData.getAll("user_input[]").map(Number);
