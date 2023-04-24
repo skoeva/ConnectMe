@@ -31,8 +31,25 @@
 
     <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
     <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:</h3>
-    <button type="button" id="shuffle-button">Shuffle Questions</button>
   
+    <!-- <div class="questions-section">
+      <form id="questionnaire-form" onsubmit="submitForm(event)">
+        <ol class="question-list">
+          {% for question in questions %}
+          <li class="question-item">
+            <label for="question-{{ loop.index }}">{{ question }}</label>
+            <div class="slidecontainer">
+              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider" value="5" required>
+              <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
+              <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
+            </div>
+            
+          </li>
+          {% endfor %}
+        </ol>
+        <button type="submit">Find my countries</button>
+      </form>
+    </div> -->
     <div class="questions-section">
       <form id="questionnaire-form" onsubmit="submitForm(event)">
         <ol class="question-list">
@@ -50,10 +67,10 @@
         <button type="submit">Find my countries</button>
       </form>
     </div>
-    
+    <button type="button" id="shuffle-button">Shuffle Questions</button>
     
     <script>
-    // const questionContainer = document.querySelector(".question-list");
+    const questionContainer = document.querySelector(".question-list");
     
     function getRandomQuestion(array) {
       return array[Math.floor(Math.random() * array.length)];
@@ -109,6 +126,9 @@
       } else {
         outputElement.style.color = "";
       }
+
+
+
       // Collect user input as an object
       const userInput = {};
       inputs.forEach(input => {
@@ -141,6 +161,28 @@
     label.textContent = slider.value;
   });
 });
+
+    // const questions = [
+    //   "1. How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
+    //   "2. How important is happiness to you?",
+    //   "3. Do you think science and technology make our lives healthier, easier, and more comfortable?",
+    //   "4. Do you think we depend too much on science and not enough on faith.",
+    //   "5. How important is not having any corruption in a country?",
+    //   "6. How important is God in your life?",
+    //   '7. In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
+    //   "8. How interested would you say you are in politics?",
+    //   "9. How important is individual human rights to you?",
+    //   "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important? (1 is associated with freedom and 10 with security)"
+    // ];
+
+    // const updated_questions = [
+    //   "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
+    //   "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort",
+    //   "3. How significant is the role of spirituality or a higher power in your life?",
+    //   "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
+    //   "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
+    // ];
+
 const personal_freedom_questions = [
   "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
   "1. How important is individual autonomy in making personal decisions?",
@@ -201,6 +243,14 @@ questionContainer.innerHTML = randomQuestions.map((question, index) => `
     <input type="range" id="question-${index + 1}" name="question-${index + 1}">
     </li>
 `).join('');
+
+  // const questionContainer = document.querySelector(".question-list");
+  //   questionContainer.innerHTML = updated_questions.map((question, index) => `
+  //       <li class="question-item">
+  //       <label for="question-${index + 1}">${question} </label>
+  //       <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+  //       </li>
+  //   `).join('');
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {

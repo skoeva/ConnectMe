@@ -4,6 +4,10 @@ from collections import defaultdict
 from flask import Flask, render_template, request, json, jsonify
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+import numpy as np
+from scipy.sparse.linalg import svds
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
 
 # ROOT_PATH for linking with all your files.
 # Feel free to use a config.py or settings.py with a global export variable
@@ -74,7 +78,9 @@ def home():
 def calculate_similarity():
     user_input = request.json.get('user_input', [])
     print(user_input)
-    top_5_countries = get_top_countries(user_input)
+    # top_5_countries = get_top_countries(user_input)
+    top_5_countries = svd_top_countries(
+        user_input)  # testing with SVD similarity
     return jsonify(top_5_countries)
 
 
@@ -86,4 +92,39 @@ def get_top_countries(user_input):
     sim_countries = sorted(
         zip(sim_array, range(len(sim_array))), reverse=True)[:5]
     top_countries = [index_to_name_map[index] for _, index in sim_countries]
+    return top_countries
+
+
+# This is the main idea of the SVD, can make some tweaks if necessary
+def svd_top_countries(user_input):
+    # Based off the original dataset, but can be changed to fit the previous top 5 countries
+    data = np.array([list(row[1:]) for row in results])
+    k = 5  # Number of parameters to reduce down to
+    scaler = StandardScaler()
+    data_standardized = scaler.fit_transform(data)
+
+    # For svd, 1<k<min(data.shape) is required. We need to add dummy columns with value 0 to the data if that is not the case
+    n_dummy_cols = 0
+    if data_standardized.shape[1] <= k:
+        n_dummy_cols = k - data_standardized.shape[1] + 1
+    data_standardized = np.concatenate((data_standardized,
+                                        np.zeros((data_standardized.shape[0], n_dummy_cols))), axis=1)
+
+    U, sigma, V_trans = svds(data_standardized, k)  # compute SVD
+
+    U_k = U[:, :k]
+    sigma_k = np.diag(sigma[:k])
+    V_trans_k = np.transpose(np.transpose(V_trans)[:k, :])
+    new_data = U_k @ sigma_k @ V_trans_k  # Computing the new data based on k
+
+    user_input_standardized = scaler.transform([user_input])
+
+    # user_input_svd = np.dot(user_input_standardized, U)
+
+    # imported cosine similarity function, but could do it manually as well.
+    similarity_scores = cosine_similarity(user_input_standardized, new_data)
+
+    top_country_indices = np.argsort(similarity_scores[0])[::-1][:5]
+    top_countries = [index_to_name_map[index] for index in top_country_indices]
+
     return top_countries
