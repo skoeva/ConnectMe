@@ -31,6 +31,7 @@
 
     <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
     <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:</h3>
+    <button type="button" id="shuffle-button">Shuffle Questions</button>
   
     <div class="questions-section">
       <form id="questionnaire-form" onsubmit="submitForm(event)">
@@ -43,13 +44,44 @@
               <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
               <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
             </div>
-            
           </li>
           {% endfor %}
         </ol>
         <button type="submit">Find my countries</button>
       </form>
     </div>
+    
+    
+    <script>
+    // const questionContainer = document.querySelector(".question-list");
+    
+    function getRandomQuestion(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+    
+    function shuffleQuestions() {
+      const randomQuestions = [
+        getRandomQuestion(personal_freedom_questions),
+        getRandomQuestion(science_technology_questions),
+        getRandomQuestion(spirituality_questions),
+        getRandomQuestion(political_orientation_questions),
+        getRandomQuestion(freedom_security_questions),
+      ];
+    
+      questionContainer.innerHTML = randomQuestions.map((question, index) => `
+          <li class="question-item">
+          <label for="question-${index + 1}">${question} </label>
+          <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+          </li>
+      `).join('');
+    }
+    
+    document.getElementById("shuffle-button").addEventListener("click", shuffleQuestions);
+    
+    // Call shuffleQuestions() initially to display the questions
+    shuffleQuestions();
+    </script>
+    
 
     <div class="output-container">
       <div id="result"></div>
@@ -77,9 +109,6 @@
       } else {
         outputElement.style.color = "";
       }
-
-
-
       // Collect user input as an object
       const userInput = {};
       inputs.forEach(input => {
@@ -112,34 +141,66 @@
     label.textContent = slider.value;
   });
 });
+const personal_freedom_questions = [
+  "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
+  "1. How important is individual autonomy in making personal decisions?",
+  "1. Do you believe that freedom of speech and expression should have limitations?",
+  "1. How important is the right to privacy in your life?",
+  "1. To what extent do you think government surveillance is justified to ensure national security?",
+];
 
-    const questions = [
-      "1. How important is free choice and control over your life to you in regards to outside influence (e.g. government)?",
-      "2. How important is happiness to you?",
-      "3. Do you think science and technology make our lives healthier, easier, and more comfortable?",
-      "4. Do you think we depend too much on science and not enough on faith.",
-      "5. How important is not having any corruption in a country?",
-      "6. How important is God in your life?",
-      '7. In political matters, people talk of "the left" and "the right." How would you place your views on this scale, generally speaking?',
-      "8. How interested would you say you are in politics?",
-      "9. How important is individual human rights to you?",
-      "10. Most people consider both freedom and security to be important, but if you had to choose between them, which one would you consider more important? (1 is associated with freedom and 10 with security)"
-    ];
-    const updated_questions = [
-      "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
-      "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort",
-      "3. How significant is the role of spirituality or a higher power in your life?",
-      "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
-      "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
-    ];
+const science_technology_questions = [
+  "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort?",
+  "2. How do you feel about the increasing reliance on artificial intelligence and automation in society?",
+  "2. Do you think that the benefits of social media outweigh its potential negative effects?",
+  "2. How important is it for society to invest in scientific research and technological development?",
+  "2. Do you believe that technology has made people more or less connected in their relationships?",
+];
 
-    const questionContainer = document.querySelector(".question-list");
-    questionContainer.innerHTML = updated_questions.map((question, index) => `
-        <li class="question-item">
-        <label for="question-${index + 1}">${question} </label>
-        <input type="range" id="question-${index + 1}" name="question-${index + 1}">
-        </li>
-    `).join('');
+const spirituality_questions = [
+  "3. How significant is the role of spirituality or a higher power in your life?",
+  "3. Do you believe that having a spiritual or religious practice contributes to overall well-being?",
+  "3. How important is it for you to cultivate a sense of purpose or meaning in life?",
+  "3. Do you think that moral and ethical values should be rooted in religious or spiritual beliefs?",
+  "3. How do you feel about the role of organized religion in modern society?",
+];
+
+const political_orientation_questions = [
+  "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
+  "4. How much do you believe that your political views are shaped by your upbringing and environment?",
+  "4. Do you think that political compromise is necessary for effective governance?",
+  "4. How important is it for you to stay informed about political issues and events?",
+  "4. To what extent do you feel that your political beliefs align with your personal values?",
+];
+
+const freedom_security_questions = [
+  "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
+  "5. How much do you believe that personal sacrifices in privacy are necessary for the sake of public safety?",
+  "5. In your opinion, should governments prioritize national security over individual liberties in times of crisis?",
+  "5. Do you feel that increased security measures infringe upon personal freedoms?",
+  "5. How do you balance your own need for privacy with your desire for safety and security?",
+];
+
+const questionContainer = document.querySelector(".question-list");
+
+function getRandomQuestion(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+const randomQuestions = [
+  getRandomQuestion(personal_freedom_questions),
+  getRandomQuestion(science_technology_questions),
+  getRandomQuestion(spirituality_questions),
+  getRandomQuestion(political_orientation_questions),
+  getRandomQuestion(freedom_security_questions),
+];
+
+questionContainer.innerHTML = randomQuestions.map((question, index) => `
+    <li class="question-item">
+    <label for="question-${index + 1}">${question} </label>
+    <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+    </li>
+`).join('');
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {
