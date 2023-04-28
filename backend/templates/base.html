@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>{% block title %}{% endblock %} - Flaskr</title>
@@ -8,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Montserrat&family=Open+Sans:wght@500&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 </head>
 
 <body>
@@ -29,8 +31,8 @@
   <div class="full-body-container">
 
     <h2>Not sure where to travel next or move to? Finding the best country for you!</h2>
-    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:</h3>
-    <button type="button" id="shuffle-button">Shuffle Questions</button>
+    <h3>Please rate the following statements from 1 to 10, with 1 being strongly disagree and 10 being strongly agree:
+    </h3>
     <div class="questions-section">
       <form id="questionnaire-form" onsubmit="submitForm(event)">
         <ol class="question-list">
@@ -38,7 +40,8 @@
           <li class="question-item">
             <label for="question-{{ loop.index }}">{{ question }}</label>
             <div class="slidecontainer">
-              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider" value="5" required>
+              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider"
+                value="5" required>
               <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
               <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
             </div>
@@ -46,37 +49,38 @@
           {% endfor %}
         </ol>
         <button type="submit">Find my countries</button>
+        <button type="button" id="shuffle-button"><i class="fas fa-random"></i></button>
       </form>
     </div>
-    
+
     <script>
-    function getRandomQuestion(array) {
-      return array[Math.floor(Math.random() * array.length)];
-    }
-    
-    function shuffleQuestions() {
-      const randomQuestions = [
-        getRandomQuestion(personal_freedom_questions),
-        getRandomQuestion(science_technology_questions),
-        getRandomQuestion(spirituality_questions),
-        getRandomQuestion(political_orientation_questions),
-        getRandomQuestion(freedom_security_questions),
-      ];
-    
-      questionContainer.innerHTML = randomQuestions.map((question, index) => `
+      function getRandomQuestion(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function shuffleQuestions() {
+        const randomQuestions = [
+          getRandomQuestion(personal_freedom_questions),
+          getRandomQuestion(science_technology_questions),
+          getRandomQuestion(spirituality_questions),
+          getRandomQuestion(political_orientation_questions),
+          getRandomQuestion(freedom_security_questions),
+        ];
+
+        questionContainer.innerHTML = randomQuestions.map((question, index) => `
           <li class="question-item">
           <label for="question-${index + 1}">${question} </label>
           <input type="range" id="question-${index + 1}" name="question-${index + 1}">
           </li>
       `).join('');
-    }
-    
-    document.getElementById("shuffle-button").addEventListener("click", shuffleQuestions);
-    
-    // Call shuffleQuestions() initially to display the questions
-    shuffleQuestions();
+      }
+
+      document.getElementById("shuffle-button").addEventListener("click", shuffleQuestions);
+
+      // Call shuffleQuestions() initially to display the questions
+      shuffleQuestions();
     </script>
-    
+
 
     <div class="output-container">
       <div id="result"></div>
@@ -119,93 +123,93 @@
 
     });
 
-   // Get all the sliders
-  const sliders = document.querySelectorAll('.slider');
+    // Get all the sliders
+    const sliders = document.querySelectorAll('.slider');
 
-  // Loop through each slider
-  sliders.forEach(slider => {
-  // Get the output element for this slider
-  const output = document.getElementById(slider.id + '-value');
-  // Get the label element for this slider
-  const label = document.getElementById(slider.id + '-label');
+    // Loop through each slider
+    sliders.forEach(slider => {
+      // Get the output element for this slider
+      const output = document.getElementById(slider.id + '-value');
+      // Get the label element for this slider
+      const label = document.getElementById(slider.id + '-label');
 
-  // Set the initial value of the label element
-  label.textContent = slider.value;
+      // Set the initial value of the label element
+      label.textContent = slider.value;
 
-  // Update the label element whenever the slider value changes
-  slider.addEventListener('input', () => {
-    label.textContent = slider.value;
-  });
-});
+      // Update the label element whenever the slider value changes
+      slider.addEventListener('input', () => {
+        label.textContent = slider.value;
+      });
+    });
 
-const personal_freedom_questions = [
-  "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
-  "1. How important is individual autonomy in making personal decisions?",
-  "1. Do you believe that freedom of speech and expression should have limitations?",
-  "1. How important is the right to privacy in your life?",
-  "1. To what extent do you think government surveillance is justified to ensure national security?",
-];
+    const personal_freedom_questions = [
+      "1. To what extent do you value personal freedom from external influences, such as government control, in your life?",
+      "1. How important is individual autonomy in making personal decisions?",
+      "1. Do you believe that freedom of speech and expression should have limitations?",
+      "1. How important is the right to privacy in your life?",
+      "1. To what extent do you think government surveillance is justified to ensure national security?",
+    ];
 
-const science_technology_questions = [
-  "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort?",
-  "2. How do you feel about the increasing reliance on artificial intelligence and automation in society?",
-  "2. Do you think that the benefits of social media outweigh its potential negative effects?",
-  "2. How important is it for society to invest in scientific research and technological development?",
-  "2. Do you believe that technology has made people more or less connected in their relationships?",
-];
+    const science_technology_questions = [
+      "2. How strongly do you believe that science and technology contribute positively to our lives in terms of health, convenience, and comfort?",
+      "2. How do you feel about the increasing reliance on artificial intelligence and automation in society?",
+      "2. Do you think that the benefits of social media outweigh its potential negative effects?",
+      "2. How important is it for society to invest in scientific research and technological development?",
+      "2. Do you believe that technology has made people more or less connected in their relationships?",
+    ];
 
-const spirituality_questions = [
-  "3. How significant is the role of spirituality or a higher power in your life?",
-  "3. Do you believe that having a spiritual or religious practice contributes to overall well-being?",
-  "3. How important is it for you to cultivate a sense of purpose or meaning in life?",
-  "3. Do you think that moral and ethical values should be rooted in religious or spiritual beliefs?",
-  "3. How do you feel about the role of organized religion in modern society?",
-];
+    const spirituality_questions = [
+      "3. How significant is the role of spirituality or a higher power in your life?",
+      "3. Do you believe that having a spiritual or religious practice contributes to overall well-being?",
+      "3. How important is it for you to cultivate a sense of purpose or meaning in life?",
+      "3. Do you think that moral and ethical values should be rooted in religious or spiritual beliefs?",
+      "3. How do you feel about the role of organized religion in modern society?",
+    ];
 
-const political_orientation_questions = [
-  "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
-  "4. How much do you believe that your political views are shaped by your upbringing and environment?",
-  "4. Do you think that political compromise is necessary for effective governance?",
-  "4. How important is it for you to stay informed about political issues and events?",
-  "4. To what extent do you feel that your political beliefs align with your personal values?",
-];
+    const political_orientation_questions = [
+      "4. In terms of political orientation, where would you place yourself on a left-right spectrum, with 1 being far left and 10 being far right?",
+      "4. How much do you believe that your political views are shaped by your upbringing and environment?",
+      "4. Do you think that political compromise is necessary for effective governance?",
+      "4. How important is it for you to stay informed about political issues and events?",
+      "4. To what extent do you feel that your political beliefs align with your personal values?",
+    ];
 
-const freedom_security_questions = [
-  "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
-  "5. How much do you believe that personal sacrifices in privacy are necessary for the sake of public safety?",
-  "5. In your opinion, should governments prioritize national security over individual liberties in times of crisis?",
-  "5. Do you feel that increased security measures infringe upon personal freedoms?",
-  "5. How do you balance your own need for privacy with your desire for safety and security?",
-];
+    const freedom_security_questions = [
+      "5. When balancing freedom and security, which do you prioritize more? Rate 1 for a strong emphasis on freedom and 10 for a strong emphasis on security?",
+      "5. How much do you believe that personal sacrifices in privacy are necessary for the sake of public safety?",
+      "5. In your opinion, should governments prioritize national security over individual liberties in times of crisis?",
+      "5. Do you feel that increased security measures infringe upon personal freedoms?",
+      "5. How do you balance your own need for privacy with your desire for safety and security?",
+    ];
 
-const questionContainer = document.querySelector(".question-list");
+    const questionContainer = document.querySelector(".question-list");
 
-function getRandomQuestion(array) {
-  return array[Math.floor(Math.random() * array.length)];
-}
+    function getRandomQuestion(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
 
-const randomQuestions = [
-  getRandomQuestion(personal_freedom_questions),
-  getRandomQuestion(science_technology_questions),
-  getRandomQuestion(spirituality_questions),
-  getRandomQuestion(political_orientation_questions),
-  getRandomQuestion(freedom_security_questions),
-];
+    const randomQuestions = [
+      getRandomQuestion(personal_freedom_questions),
+      getRandomQuestion(science_technology_questions),
+      getRandomQuestion(spirituality_questions),
+      getRandomQuestion(political_orientation_questions),
+      getRandomQuestion(freedom_security_questions),
+    ];
 
-questionContainer.innerHTML = randomQuestions.map((question, index) => `
+    questionContainer.innerHTML = randomQuestions.map((question, index) => `
     <li class="question-item">
     <label for="question-${index + 1}">${question} </label>
     <input type="range" id="question-${index + 1}" name="question-${index + 1}">
     </li>
 `).join('');
 
-  // const questionContainer = document.querySelector(".question-list");
-  //   questionContainer.innerHTML = updated_questions.map((question, index) => `
-  //       <li class="question-item">
-  //       <label for="question-${index + 1}">${question} </label>
-  //       <input type="range" id="question-${index + 1}" name="question-${index + 1}">
-  //       </li>
-  //   `).join('');
+    // const questionContainer = document.querySelector(".question-list");
+    //   questionContainer.innerHTML = updated_questions.map((question, index) => `
+    //       <li class="question-item">
+    //       <label for="question-${index + 1}">${question} </label>
+    //       <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+    //       </li>
+    //   `).join('');
 
     async function postData(url = '', data = {}) {
       const response = await fetch(url, {

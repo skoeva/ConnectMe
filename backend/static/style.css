@@ -101,6 +101,18 @@ img {
   height: 350px;
 }
 
+button[type="button"] {
+  background-color: #4285f4;
+  cursor: pointer;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border-radius: 25px;
+  border: none;
+  transition: background-color 0.2s;
+  align-self: center;
+}
+
 button[type="submit"] {
   background-color: #4285f4;
   cursor: pointer;

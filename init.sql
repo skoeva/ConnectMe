@@ -1,8 +1,9 @@
 CREATE DATABASE IF NOT EXISTS connectmedb;
 
 USE connectmedb;
-DROP TABLE IF EXISTS responses;
 
+DROP TABLE IF EXISTS responses;
+DROP TABLE IF EXISTS attractions;
 
 
 CREATE TABLE responses (
@@ -79,12 +80,10 @@ DROP COLUMN q5,
 DROP COLUMN q8,
 DROP COLUMN q9;
 
-DROP TABLE IF EXISTS attractions;
-
 CREATE TABLE attractions (
 		`country` varchar(16),
 		`a1` varchar(45),
-		`a2` varchar(40),
+		`a2` varchar(50),
 		`a3` varchar(45)
 );
 
@@ -101,7 +100,7 @@ INSERT INTO attractions VALUES ('Andorra', 'Grandvalira', 'Soldeu - El Tarter', 
 	('Colombia', 'Walled City of Cartagena', 'Mount Monserrate', 'Gold Museum (Museo del Oro)'),
 	('Cyprus', 'Kato Paphos Archaeological Park', 'Nissi Beach', 'Tombs of the Kings'),
 	('Czechia', 'Staromestske namesti', 'Charles Bridge', 'St. Vitus Cathedral'),
-	('Ecuador', 'Museo Templo del Sol Pintor Ortega Maila', ),
+	('Ecuador', 'Museo Templo del Sol Pintor Ortega Maila', 'Fundación Iglesia de la Compañía', 'TeleferiQo Teleferico Quito'),
 	('Ethiopia', 'Simien Mountains National Park', 'Omo National Park and River', 'Rock-Hewn Churches of Lalibela'),
 	('Germany', 'Miniatur Wunderland', 'Reichstag Building', 'Brandenburg Gate'),
 	('Greece', 'Acropolis', 'Acropolis Museum', 'Parthenon'),
