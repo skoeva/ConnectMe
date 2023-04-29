@@ -18,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "mysqlroot"
+MYSQL_USER_PASSWORD = "Year2013"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -125,6 +125,7 @@ def svd_top_countries(user_input):
     similarity_scores = cosine_similarity(user_input_standardized, new_data)
 
     top_country_indices = np.argsort(similarity_scores[0])[::-1][:5]
-    top_countries = [index_to_name_map[index] for index in top_country_indices]
+    top_countries = [{"name": index_to_name_map[index], "score": similarity_scores[0][index]} for index in top_country_indices]
 
     return top_countries
+
