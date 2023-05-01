@@ -18,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "Year2013"
+MYSQL_USER_PASSWORD = "JonJoyNao13+"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 
@@ -46,12 +46,13 @@ index_to_name_map = {}
 for i, country in enumerate(joined):
     index_to_name_map[i] = country[0]
 
-#Separate into responses and attractions again
+# Separate into responses and attractions again
 results = []
 attractions = []
 for row in joined:
     country = row[0]
-    sep_index = row.index(row[0],1) #Use "country" column in both tables to separate
+    # Use "country" column in both tables to separate
+    sep_index = row.index(row[0], 1)
     results.append(row[:sep_index])
     attractions.append(row[sep_index:])
 
@@ -135,10 +136,9 @@ def svd_top_countries(user_input):
     similarity_scores = cosine_similarity(user_input_standardized, new_data)
 
     top_country_indices = np.argsort(similarity_scores[0])[::-1][:5]
-    top_countries = [{"name": index_to_name_map[index], 
+    top_countries = [{"name": index_to_name_map[index],
                       "score": similarity_scores[0][index],
                       "attractions":attractions[index][1:]
                       } for index in top_country_indices]
     print(top_countries)
     return top_countries
-

@@ -40,10 +40,7 @@
           <li class="question-item">
             <label for="question-{{ loop.index }}">{{ question }}</label>
             <div class="slidecontainer">
-              <input type="range" id="question-{{ loop.index }}" name="user_input[]" min="1" max="10" class="slider"
-                value="5" required>
-              <output id="question-{{ loop.index }}-value" for="question-{{ loop.index }}">{{ loop.index }}</output>
-              <span id="question-{{ loop.index }}-label" class="slider-label">{{ loop.index }}</span>
+              <input type="number" id="question-${index + 1}" name="question-${index + 1}">
             </div>
           </li>
           {% endfor %}
@@ -70,7 +67,7 @@
         questionContainer.innerHTML = randomQuestions.map((question, index) => `
           <li class="question-item">
           <label for="question-${index + 1}">${question} </label>
-          <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+          <input type="number" id="question-${index + 1}" name="question-${index + 1}">
           </li>
       `).join('');
       }
@@ -90,7 +87,7 @@
   <script>
     document.getElementById("questionnaire-form").addEventListener("submit", async function (event) {
       event.preventDefault();
-      const inputs = document.querySelectorAll("#questionnaire-form input[type='range']");
+      const inputs = document.querySelectorAll("#questionnaire-form input[type='number']");
       const outputElement = document.getElementById("results");
 
       // Check if all inputs are filled
@@ -205,7 +202,7 @@
     questionContainer.innerHTML = randomQuestions.map((question, index) => `
     <li class="question-item">
     <label for="question-${index + 1}">${question} </label>
-    <input type="range" id="question-${index + 1}" name="question-${index + 1}">
+    <input type="number" id="question-${index + 1}" name="question-${index + 1}">
     </li>
 `).join('');
 
@@ -232,7 +229,7 @@
       event.preventDefault();
       const form = document.getElementById("questionnaire-form");
       const formData = new FormData(form);
-      const inputs = Array.from(document.querySelectorAll('input[type="range"]'));
+      const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
       const userInput = inputs.map(input => Number(input.value));
 
       //const userInput = formData.getAll("user_input[]").map(Number);
