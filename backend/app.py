@@ -36,15 +36,25 @@ CORS(app)
 # there's a much better and cleaner way to do this
 
 # Query for all countries in dataset
-query = f"""SELECT * FROM responses"""
+query = f"""SELECT * FROM responses JOIN attractions ON responses.country = attractions.country"""
 data = mysql_engine.query_selector(query)
-results = data.fetchall()
-len(results)
+joined = data.fetchall()
+
 
 # Map index to country name from the query results
 index_to_name_map = {}
-for i, country in enumerate(results):
+for i, country in enumerate(joined):
     index_to_name_map[i] = country[0]
+
+#Separate into responses and attractions again
+results = []
+attractions = []
+for row in joined:
+    country = row[0]
+    sep_index = row.index(row[0],1) #Use "country" column in both tables to separate
+    results.append(row[:sep_index])
+    attractions.append(row[sep_index:])
+
 
 # Create similarity array
 sim_array = [0] * len(results)
@@ -125,7 +135,10 @@ def svd_top_countries(user_input):
     similarity_scores = cosine_similarity(user_input_standardized, new_data)
 
     top_country_indices = np.argsort(similarity_scores[0])[::-1][:5]
-    top_countries = [{"name": index_to_name_map[index], "score": similarity_scores[0][index]} for index in top_country_indices]
-
+    top_countries = [{"name": index_to_name_map[index], 
+                      "score": similarity_scores[0][index],
+                      "attractions":attractions[index][1:]
+                      } for index in top_country_indices]
+    print(top_countries)
     return top_countries
 
