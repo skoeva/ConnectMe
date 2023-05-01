@@ -251,10 +251,13 @@
 
       const resultElement = document.getElementById("result");
       resultElement.innerHTML = `
-  <span class="output-message">
+  <span class="output-message" style="text-align: left;">
       Your top 5 countries are:
       <ul>
-          ${result.map(country => `<li>${country.name} (${(country.score * 100).toFixed(2)}%)  <br/>${country.attractions}<br/><br/> </li>`).join('')}
+          ${result.map(country => `<li>${country.name} (${(country.score * 100).toFixed(2)}%)  <ul>
+              ${country.attractions.map(attraction => `<li>${attraction}</li>`).join('')}
+            </ul>
+            <br/><br/> </li>`).join('')}
       </ul>
   </span>`;
 
