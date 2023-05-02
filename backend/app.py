@@ -18,7 +18,7 @@ os.environ['ROOT_PATH'] = os.path.abspath(os.path.join("..", os.curdir))
 # You can use a different DB name if you want to
 MYSQL_USER = "root"
 # Change this to whatever your MySQL password is
-MYSQL_USER_PASSWORD = "JonJoyNao13+"
+MYSQL_USER_PASSWORD = "mysqlroot"
 MYSQL_PORT = 3306
 MYSQL_DATABASE = "connectmedb"
 

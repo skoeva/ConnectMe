@@ -40,7 +40,7 @@
           <li class="question-item">
             <label for="question-{{ loop.index }}">{{ question }}</label>
             <div class="slidecontainer">
-              <input type="number" id="question-${index + 1}" name="question-${index + 1}">
+              <input type="number" id="question-${index + 1}" name="question-${index + 1}" min="1" max="10" value="5">
             </div>
           </li>
           {% endfor %}
